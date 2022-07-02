@@ -8,7 +8,7 @@
 
 注意，本文重点在于基于iptables的Service实现原理，所有实验都是用IP进行的，略过关于DNS的部分。
 
-另外，本文的前提是kube-proxy使用`iptables`代理模式，别的代理模式不在本文讨论范围，详细可以参考[官方文档](https://kubernetes.io/docs/concepts/services-networking/service/#configuration)。在`iptables`代理模式下，负载均衡的实现是通过`NAT iptables`规则来实现的，在创建和修改Service的时候，kube-proxy会在node上面修改iptables规则，从而确保流量被转发到正确的Pod上面。
+另外，本文的前提是kube-proxy使用`iptables`代理模式，别的代理模式不在本文讨论范围，详细可以参考[官方文档](https://kubernetes.io/docs/concepts/services-networking/service/#configuration)。在`iptables`代理模式下，负载均衡的实现是通过`NAT iptables`规则来实现的，在Endpoints或Services发生变动时，kube-proxy会在node上面修改iptables规则，从而确保流量被转发到正确的Pod上面。
 
 使用iptables的好处是，iptables是Linux提供的网络功能，流量由Linux netfilter处理，而不经过kube-proxy，这使得流量处理更加高效，并且当kube-proxy挂掉之后，也不会导致流量中断。
 
